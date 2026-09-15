@@ -13,3 +13,13 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 # Extracts JWT from the Access Token
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
+
+def create_access_token():
+    pass
+
+def verify_access_token():
+    pass
+
+
+
+
