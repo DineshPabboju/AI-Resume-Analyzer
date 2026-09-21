@@ -1,12 +1,15 @@
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, status, HTTPException
 from .config import settings
+from pwdlib import PasswordHasher
+
 
 SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 
+hasher = PasswordHasher()
 
 
 
@@ -21,5 +24,13 @@ def verify_access_token():
     pass
 
 
+def hash_password(password: str) -> str:
+    return hasher.hash(password)
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    try:
+        return hasher.verify(plain_password, hashed_password)
+    except Exception:
+        return False
 
 
