@@ -2,7 +2,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, status, HTTPException
 from .config import settings
 from pwdlib import PasswordHasher
-
+from jwt import jwt, PyJWTError
 
 SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
@@ -18,10 +18,15 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 
 def create_access_token():
+    
     pass
 
 def verify_access_token():
     pass
+
+
+
+
 
 
 def hash_password(password: str) -> str:

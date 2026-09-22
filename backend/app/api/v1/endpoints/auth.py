@@ -37,6 +37,9 @@ async def login(credentials:UserLogin, db: AsyncSession = Depends(get_db)):
     if not verify_password(credentials.password, user.password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
     
+    access_token = create_access_token(data={"sub": str(user.id)})
+    
+    return {"message": "Login successful", "user": {"name": user.full_name, "email": user.email, "created_at": user.created_at}}
     # Here you would typically create and return a JWT token
     # For now, we'll just return the user object
     return user
