@@ -5,7 +5,7 @@ from ....schemas.user import UserRegister, UserLogin
 from ....core.security import hash_password, verify_password
 from sqlalchemy.future import select
 from ....models.user import User
-
+from ....core.oauth2 import create_access_token
 
 
 
@@ -39,7 +39,4 @@ async def login(credentials:UserLogin, db: AsyncSession = Depends(get_db)):
     
     access_token = create_access_token(data={"sub": str(user.id)})
     
-    return {"message": "Login successful", "user": {"name": user.full_name, "email": user.email, "created_at": user.created_at}}
-    # Here you would typically create and return a JWT token
-    # For now, we'll just return the user object
-    return user
+    return {"message": "Login successful", "access_token": access_token, "token_type": "bearer"}
