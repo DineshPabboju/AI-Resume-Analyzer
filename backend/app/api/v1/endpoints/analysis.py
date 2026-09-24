@@ -14,3 +14,4 @@ async def get_analysis():
         "message": "Analysis endpoint is working fine.",
         "version": "1.0.0"
     }
+    
