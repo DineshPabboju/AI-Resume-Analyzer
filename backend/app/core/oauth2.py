@@ -8,9 +8,9 @@ from ..models.user import User
 from ..core.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
-SECRET_KEY = settings.SECRET_KEY
-ALGORITHM = settings.ALGORITHM
-ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 
 # Extracts JWT from the Access Token
@@ -30,7 +30,10 @@ def create_access_token(data: dict):
  
     
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db),
+):
     credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
@@ -41,7 +44,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         user_id: str = payload.get("sub")
         if user_id is None:
             raise credentials_exception
-        user = await get_user_by_id(user_id)  # Implement this function to fetch user from DB
+        user = await get_user_by_id(user_id, db)
         if user is None:
             raise credentials_exception
         return user
